@@ -1,0 +1,8 @@
+google calendar
+    la empty slots dai click si iti sugereaza
+un alt treeview per proiect
+    la fiecare nod din tree, poti: 
+        estimare, prioritate, asignare time slot, recurring
+todoist quality of life
+    add 
+        taguri gen "tomorrow" sau <nume proiect> sau <p#>
