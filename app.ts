@@ -10,6 +10,7 @@ const app = express()
 app.get('/test', (req, res) => {
     res.end('testing');
 });
-app.listen(port)
+app.use(express.static('dist/public'));
+app.listen(port);
 
 console.log('started on ' + port)

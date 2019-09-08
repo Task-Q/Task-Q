@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc app.ts --outDir dist --esModuleInterop && node dist/app"
+    "build": "tsc app.ts --outDir dist --esModuleInterop",
+    "start": "node dist/app"
   },
   "keywords": [],
   "author": "",
