@@ -6,3 +6,17 @@ un alt treeview per proiect
 todoist quality of life
     add 
         taguri gen "tomorrow" sau <nume proiect> sau <p#>
+
+
+be:
+	db & endpoints
+	move todo up & down
+	done propagation to parent and children
+
+fe:
+	add at root level
+	mat dialog
+	tooltips
+	intl
+	mobile
+	refactor

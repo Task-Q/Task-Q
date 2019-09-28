@@ -1,0 +1,132 @@
+$primary: #3f51b5;
+$hl: rgba(0, 0, 0, 0.04);
+$boxsh: rgba(0, 0, 0, 0.3);
+$red: #ca0202b0;
+$green: #3cb50a;
+
+* {
+  user-select: none;
+}
+
+.col-red {
+  color: $red;
+}
+
+.col-green {
+  color: $green;
+}
+
+.nav-tabs {
+  height: 100%;
+
+  .mat-tab-body-wrapper {
+    height: 100%;
+  }
+
+  .mat-tab-header {
+    border-bottom: 0px;
+    background: $primary;
+    box-shadow: 0 2px 5px 0 $boxsh;
+
+    .mat-tab-labels {
+      padding-left: 15px;
+    }
+
+    .mat-tab-label {
+      color: white;
+      min-width: unset;
+      font-weight: 400;
+      height: 60px;
+      font-size: 17px;
+      padding: 20px;
+
+      &-active {
+        opacity: 1;
+      }
+    }
+  }
+  .mat-tab-body {
+    top: 5px;
+    .tasks-sidenav-container {
+      height: 100%;
+
+      .mat-sidenav {
+        width: 350px;
+        .mat-list {
+          padding: 20px;
+          &-item {
+            height: 32px;
+
+            .truncated-text {
+              max-width: 230px;
+              opacity: 0.7;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            &:hover {
+              background: $hl;
+            }
+
+            &.highlight {
+              font-weight: 500;
+
+              .truncated-text {
+                opacity: 1;
+                color: $primary;
+              }
+            }
+
+            font-size: 14px;
+            height: 32px;
+            cursor: pointer;
+          }
+        }
+      }
+      .mat-sidenav-content {
+        .mat-list {
+          padding: 20px;
+
+          &-item {
+            font-size: 18px;
+            cursor: pointer;
+            height: 40px;
+            &:hover {
+              background: $hl;
+            }
+            &.todo-done .text {
+              text-decoration: line-through;
+              opacity: 0.4;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.mat-list-item {
+  .actions {
+    display: none;
+  }
+
+  &:hover .actions {
+    display: block;
+    position: absolute;
+    right: 5px;
+    direction: rtl;
+
+    .action {
+      display: inline-block;
+      opacity: 0.2;
+      position: relative;
+      top: 2px;
+      padding-left: 2px;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
