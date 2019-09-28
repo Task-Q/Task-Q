@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc app.ts --outDir dist --esModuleInterop",
+    "build": "tsc src/app.ts --outDir dist --esModuleInterop",
     "start": "node dist/app"
   },
   "keywords": [],

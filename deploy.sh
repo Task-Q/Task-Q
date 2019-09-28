@@ -3,7 +3,7 @@ rm -r dist
 npm i
 npm run build
 
-cd task-q-fe/
+cd frontend/
 npm i
 npm run build
 mv dist ../dist/public
