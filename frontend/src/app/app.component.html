@@ -9,11 +9,18 @@
 						[class.highlight]="taskIndex === i" (click)="taskIndex = i">
 						<span class="truncated-text">{{task.name}}</span>
 						<div class="actions">
-							<mat-icon class="action col-red">delete</mat-icon>
-							<mat-icon class="action">edit</mat-icon>
+							<mat-icon (click)="$event.stopPropagation() || deleteTask(task.id)" class="action col-red">
+								delete
+							</mat-icon>
+							<mat-icon (click)="$event.stopPropagation() || addTask()" class="action">
+								edit
+							</mat-icon>
 						</div>
 					</mat-list-item>
 				</mat-list>
+				<button (click)="addTask()" mat-fab class="add-btn">
+					<mat-icon>add</mat-icon>
+				</button>
 			</mat-sidenav>
 
 			<mat-sidenav-content>
@@ -24,24 +31,29 @@
 						</span>
 						<span class="text">{{todo.name}}</span>
 						<div class="actions">
-							<mat-icon (click)="$event.stopPropagation() || addTodoChild(todo)" class="action">
+							<mat-icon (click)="$event.stopPropagation() || addTodo(todo.id)" class="action">
 								filter_none
 							</mat-icon>
 							<mat-icon (click)="$event.stopPropagation() || editTodo(todo)" class="action">
 								edit
 							</mat-icon>
-							<mat-icon (click)="$event.stopPropagation() || deleteTodo(todo)" class="action col-red">
+							<mat-icon (click)="$event.stopPropagation() || deleteTodo(todo.id)" class="action col-red">
 								delete
 							</mat-icon>
-							<mat-icon (click)="$event.stopPropagation() || moveTodo(todo, 'down')" class="action">
+							<mat-icon (click)="$event.stopPropagation() || moveTodo(todo.id, 'down')" class="action">
 								arrow_downward
 							</mat-icon>
-							<mat-icon (click)="$event.stopPropagation() || moveTodo(todo, 'up')" class="action">
+							<mat-icon (click)="$event.stopPropagation() || moveTodo(todo.id, 'up')" class="action">
 								arrow_upward
 							</mat-icon>
 						</div>
 					</mat-list-item>
 				</mat-list>
+
+				<button (click)="addTodo()" mat-fab class="add-btn">
+					<mat-icon>add</mat-icon>
+				</button>
+
 			</mat-sidenav-content>
 
 		</mat-sidenav-container>

@@ -1,4 +1,7 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import {
+	Component,
+	ChangeDetectionStrategy
+} from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import { TodoService } from './todo.service';
 import { ITodo, ITask } from './models';
@@ -19,29 +22,20 @@ export class AppComponent {
 		this.refresh();
 	}
 
-	public get _currentTaskId() {
-		return this.tasks[this.taskIndex].id;
-	}
-
 	public refresh() {
 		this._service.getTasks().subscribe(tasks => this.tasks = tasks);
 	}
 
 	public toggle(todo: ITodo) {
 		todo.done = !todo.done || undefined;
-		this._service.editTodo(this._currentTaskId, todo.id, todo)
+		this._service.editTodo(todo.id, todo)
 			.subscribe();
 	}
 
-	public addTodoChild(parent: ITodo) {
-		const name = prompt('Sub todo name = ');
+	public addTodo(parentId?: number) {
+		const name = prompt('name = ');
 		if (name != null) {
-			const newTodo = {
-				name,
-				parentId: parent.id,
-				level: parent.level + 1
-			};
-			this._service.addTodo(this._currentTaskId, newTodo).pipe(
+			this._service.addTodo(this.tasks[this.taskIndex].id, name, parentId).pipe(
 				tap(() => this.refresh())
 			).subscribe();
 		}
@@ -51,21 +45,47 @@ export class AppComponent {
 		const name = prompt('Todo name = ');
 		if (name != null) {
 			todo.name = name;
-			this._service.editTodo(this._currentTaskId, todo.id, todo)
+			this._service.editTodo(todo.id, todo)
 				.subscribe();
 		}
 	}
 
-	public deleteTodo(todo: ITodo) {
+	public deleteTodo(id: number) {
 		if (confirm('sure?')) {
-			this._service.deleteTodo(this._currentTaskId, todo.id).pipe(
+			this._service.deleteTodo(id).pipe(
 				tap(() => this.refresh())
 			).subscribe();
 		}
 	}
-	public moveTodo(todo: ITodo, direction: 'up' | 'down') {
-		this._service.moveTodo(this._currentTaskId, todo, direction).pipe(
+	public moveTodo(id: number, direction: 'up' | 'down') {
+		this._service.moveTodo(id, direction).pipe(
 			tap(() => this.refresh())
 		).subscribe();
+	}
+
+	public addTask() {
+		const name = prompt('name = ');
+		if (name != null) {
+			this._service.addTask({ name, todos: [] }).pipe(
+				tap(() => this.refresh())
+			).subscribe();
+		}
+	}
+
+	public deleteTask(id: number) {
+		if (confirm('sure?')) {
+			this._service.deleteTask(id).pipe(
+				tap(() => this.refresh())
+			).subscribe();
+		}
+	}
+
+	public editTask(task: ITask) {
+		const name = prompt('Task name = ');
+		if (name != null) {
+			task.name = name;
+			this._service.editTask(task.id, task)
+				.subscribe();
+		}
 	}
 }

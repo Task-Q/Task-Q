@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { ITask, ITodoUpdate, INewTodo, ITodo } from './models';
+import {
+	ITask,
+	ITodoUpdate,
+	ITodo,
+	INewTask,
+	ITaskUpdate
+} from './models';
 
 @Injectable({
 	providedIn: 'root'
@@ -44,11 +50,12 @@ export class TodoService {
 		return of(this._tasks);
 	}
 
-	public editTodo(taskId: number, id: number, changes: ITodoUpdate) {
+	public editTodo(id: number, changes: ITodoUpdate) {
 		const tasks = this._tasks;
-		this._findTask(tasks, taskId).todos.forEach(todo => {
+		this._taskByTodo(tasks, id).todos.forEach(todo => {
 			if (todo.id === id) {
 				Object.assign(todo, changes);
+				return;
 			}
 		});
 
@@ -56,15 +63,17 @@ export class TodoService {
 		return of(true);
 	}
 
-	public addTodo(taskId: number, todo: INewTodo) {
-		const newTodo = { ...todo, id: nextId() };
+	public addTodo(taskId: number, name: string, parentId?: number) {
+		const newTodo: ITodo = { name, id: nextId(), parentId, level: -1 };
 		const tasks = this._tasks;
-		const task = this._findTask(tasks, taskId);
+		const task = tasks.find(t => t.id === taskId);
 
-		if (todo.parentId == null) {
+		if (parentId == null) {
 			task.todos.push(newTodo);
+			newTodo.level = 0;
 		} else {
-			const parentIndex = task.todos.findIndex(t => t.id === todo.parentId);
+			const parentIndex = task.todos.findIndex(t => t.id === parentId);
+			newTodo.level = task.todos[parentIndex].level + 1;
 			task.todos.splice(parentIndex + 1, 0, newTodo);
 		}
 
@@ -72,21 +81,45 @@ export class TodoService {
 		return of(true);
 	}
 
-	public deleteTodo(taskId: number, todoId: number) {
+	public deleteTodo(todoId: number) {
+		// also delete children...
 		const tasks = this._tasks;
-		const task = this._findTask(tasks, taskId);
+		const task = this._taskByTodo(tasks, todoId);
 		task.todos = task.todos.filter(todo => todo.id !== todoId);
 		this._tasks = tasks;
 		return of(true);
 	}
 
-	public moveTodo(taskId: number, todo: ITodo, direction: 'up' | 'down') {
-		// iei todoul toti copiii si ii muti cu totul mai sus peste toti copiii aluia de mai sus si peste el sau inversin jos
+	public addTask(task: INewTask) {
+		const tasks = this._tasks;
+		tasks.push({
+			...task,
+			id: nextId(),
+		});
+		this._tasks = tasks;
 		return of(true);
 	}
 
-	private _findTask(tasks: ITask[], id: number) {
-		return tasks.find(t => t.id === id);
+	public editTask(taskId: number, changes: ITaskUpdate) {
+		const tasks = this._tasks;
+		const task = tasks.find(t => t.id === taskId);
+		Object.assign(task, changes);
+		this._tasks = tasks;
+		return of(true);
+	}
+
+	public deleteTask(taskId: number) {
+		this._tasks = this._tasks.filter(t => t.id !== taskId);
+		return of(true);
+	}
+
+	public moveTodo(todoId: number, direction: 'up' | 'down') {
+		// just change order index
+		return of(true);
+	}
+
+	private _taskByTodo(tasks: ITask[], todoId: number) {
+		return tasks.find(t => t.todos.find(tod => tod.id === todoId));
 	}
 }
 

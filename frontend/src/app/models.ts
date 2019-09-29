@@ -14,3 +14,6 @@ export interface ITask {
 	name: string;
 	todos: ITodo[];
 }
+
+export type INewTask = Omit<ITask, 'id'>;
+export type ITaskUpdate = Partial<INewTask>;

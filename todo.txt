@@ -14,9 +14,8 @@ be:
 	done propagation to parent and children
 
 fe:
-	add at root level
+	better add todo child icon
 	mat dialog
 	tooltips
-	intl
 	mobile
 	refactor

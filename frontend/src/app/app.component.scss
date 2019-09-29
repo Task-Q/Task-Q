@@ -1,6 +1,7 @@
+@import "~@angular/material/theming";
+
 $primary: #3f51b5;
 $hl: rgba(0, 0, 0, 0.04);
-$boxsh: rgba(0, 0, 0, 0.3);
 $red: #ca0202b0;
 $green: #3cb50a;
 
@@ -26,7 +27,7 @@ $green: #3cb50a;
   .mat-tab-header {
     border-bottom: 0px;
     background: $primary;
-    box-shadow: 0 2px 5px 0 $boxsh;
+    @include mat-elevation(2);
 
     .mat-tab-labels {
       padding-left: 15px;
@@ -49,6 +50,10 @@ $green: #3cb50a;
     top: 5px;
     .tasks-sidenav-container {
       height: 100%;
+
+      .mat-drawer-inner-container {
+        position: relative;
+      }
 
       .mat-sidenav {
         width: 350px;
@@ -128,5 +133,22 @@ $green: #3cb50a;
         opacity: 1;
       }
     }
+  }
+}
+
+.mat-fab.add-btn {
+  opacity: 0;
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  font-size: 18px;
+  transition: all 100ms ease-in-out;
+}
+
+*:hover > .mat-fab.add-btn {
+  opacity: 0.4;
+
+  &:hover {
+    opacity: 1;
   }
 }
