@@ -1,16 +1,55 @@
-import express from 'express'
+import 'dotenv/config'
+import mongoose from 'mongoose'
+import express, { Application } from 'express'
+import Controller from './interfaces/controller';
+import TodoController from './controllers/todoController';
 
-let port = process.env.PORT;
-if (port == null || port == "") {
-  port = "8081";
+class App {
+  private app: Application;
+
+  constructor() {
+    this.app = express();
+
+    this.connectToMongoDb();
+    this.initializeControllers();
+
+    this.serveFrontend();
+  }
+
+  public listen(port: string) {
+    this.app.listen(port, () => console.log(`App listening on port ${port}`));
+  }
+
+  private connectToMongoDb() {
+    const MONGO_USER = process.env.MONGO_USER;
+    const MONGO_PASSWORD = process.env.MONGO_PASSWORD;
+    const MONGO_DATABASE_NAME = process.env.MONGO_DATABASE_NAME;
+    const dbUri = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@maincluster-e6wjc.mongodb.net/${MONGO_DATABASE_NAME}?retryWrites=true&w=majority`;
+
+    mongoose.connect(
+      dbUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+  }
+
+  private initializeControllers() {
+    [
+      new TodoController()
+    ].forEach(controller => {
+      this.app.use('/api/', controller.router);
+    });
+  }
+
+  private serveFrontend() {
+    this.app.use(express.static('dist/public/frontend'));
+  }
 }
 
-const app = express()
+let PORT = process.env.PORT;
+if (PORT == null || PORT == '') {
+  PORT = '8081';
+}
 
-app.get('/test', (req, res) => {
-    res.end('testing');
-});
-app.use(express.static('dist/public/frontend'));
-app.listen(port);
-
-console.log('started on ' + port)
+const app = new App();
+app.listen(PORT);
